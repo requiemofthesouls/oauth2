@@ -7,6 +7,9 @@ type (
 	ClientStore interface {
 		// according to the ID for the client information
 		GetByID(ctx context.Context, id string) (ClientInfo, error)
+
+		// set new client
+		Set(id string, cli ClientInfo) error
 	}
 
 	// TokenStore the token information storage interface

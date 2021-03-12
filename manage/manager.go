@@ -140,6 +140,17 @@ func (m *Manager) GetClient(ctx context.Context, clientID string) (cli oauth2.Cl
 	return
 }
 
+// SetClient set the client information
+func (m *Manager) SetClient(ctx context.Context, cli oauth2.ClientInfo) error {
+	_, err := m.clientStore.GetByID(ctx, cli.GetID())
+	if err == nil {
+		return errors.ErrClientAlreadyExists
+	}
+
+	_ = m.clientStore.Set(cli.GetID(), cli)
+	return nil
+}
+
 // GenerateAuthToken generate the authorization token(code)
 func (m *Manager) GenerateAuthToken(ctx context.Context, rt oauth2.ResponseType, tgr *oauth2.TokenGenerateRequest) (oauth2.TokenInfo, error) {
 	cli, err := m.GetClient(ctx, tgr.ClientID)
